@@ -1,6 +1,7 @@
 import './App.css';
 import FieldContainer from './components/field/FieldContainer';
 import { useState } from 'react';
+import { media } from './functionality/getResource';
 
 function App() {
   const [fieldDims, setFieldDims] = useState({x: 2, y: 2});
@@ -41,6 +42,7 @@ function App() {
         <button type='submit' onClick={handleClick}>Enter</button>
       </form>
       <FieldContainer xDim={xVal} yDim={yVal} />
+      <img src={media.player} alt='' style={{position: 'absolute', top: '408.5px', left: '669.5px'}} />
     </div>
   );
 }

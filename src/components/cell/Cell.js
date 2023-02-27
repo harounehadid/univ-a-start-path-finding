@@ -1,7 +1,9 @@
 import { media } from "../../functionality/getResource";
 
 const Cell = props => {
-    const { xPos, yPos } = props;
+    const { xPos, yPos, ref } = props;
+
+    console.log(ref);
 
     const styles = {
         container: {

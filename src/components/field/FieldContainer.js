@@ -1,4 +1,4 @@
-import Cell from "../cell/Cell";
+import CellContainer from "../cell/CellContainer";
 
 const FieldContainer = props => {
     const { xDim, yDim } = props;
@@ -12,10 +12,6 @@ const FieldContainer = props => {
         margin: '10px'
     };
 
-    console.log(styles.gridTemplate);
-
-    // console.log(`X: ${xDim}  Y: ${yDim}`)
-
     const fieldArray = [];
 
     for (let i = 0; i < xDim; i++) {
@@ -28,13 +24,11 @@ const FieldContainer = props => {
         fieldArray.push(row);
     }
 
-    // console.log(fieldArray);
-
     return (
         <div style={styles}>
             {
                 fieldArray.map(row => {
-                    return row.map((cell, index) => <Cell xPos={cell.x} yPos={cell.y} key={index} />)
+                    return row.map((cell, index) => <CellContainer xPos={cell.x} yPos={cell.y} key={index} />)
                 })
             }
         </div>
