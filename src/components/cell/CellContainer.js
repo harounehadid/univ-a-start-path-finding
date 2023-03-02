@@ -3,62 +3,29 @@ import { useRef, useState, useEffect } from 'react';
 // import React from 'react';
 
 const CellContainer = props => {
-    const { xPos, yPos } = props;
+    const { xIndex, yIndex } = props;
 
-    const boxRef = useRef();
+    const ref = useRef();
+  
+    // This function calculate X and Y cordinates of the center of the element
+    const getCenterCords = () => {
+      // Getting the x and y cordinations of element's edges
+      const rect = ref.current.getBoundingClientRect();
 
-    // X
-    const [x, setX] = useState();
-  
-    // Y
-    const [y, setY] = useState();
-  
-    // This function calculate X and Y
-    const getPosition = () => {
-      const newX = ((boxRef.current.getBoundingClientRect().right - boxRef.current.getBoundingClientRect().left) / 4) + boxRef.current.getBoundingClientRect().left;
-      // setX(x);
-  
-      const newY = ((boxRef.current.getBoundingClientRect().bottom - boxRef.current.getBoundingClientRect().top) / 4) + boxRef.current.getBoundingClientRect().top;
-      // setY(y);
+      // Formula: ((right - left) / 4) + left
+      const xCord = ((rect.right - rect.left) / 4) + rect.left;
 
-      console.log(`X: ${newX}, Y: ${newY}`);
+      // Formula: ((bottom - top) / 4) + top 
+      const yCord = ((rect.bottom - rect.top) / 4) + rect.top;
+
+      return {x: xCord, y: yCord};
     };
-  
-    // Get the position of the red box in the beginning
-    useEffect(() => {
-      getPosition();
-    }, []);
-  
-    // Re-calculate X and Y of the red box when the window is resized by the user
-    useEffect(() => {
-      window.addEventListener("resize", getPosition);
-    }, []);
 
     return (
-      <div ref={boxRef}>
-        <Cell xPos={xPos} yPos={yPos} />
+      <div ref={ref}>
+        <Cell xPos={xIndex} yPos={yIndex} />
       </div>
     );
 }
-
-// class CellContainer extends React.Component {
-//     constructor(props) {
-//         super(props);
-
-//         // this.myRef = document.getSelection;
-//         // this.rect = this.getBoundingClientRect();
-//         console.log(this);
-//     }
-
-
-
-//     render() {
-//         return (
-//             <div ref='eleRef'>
-//                 <Cell xPos={this.props.xPos} yPos={this.props.yPos}/>
-//             </div>
-//         );
-//     }
-// }
 
 export default CellContainer;
