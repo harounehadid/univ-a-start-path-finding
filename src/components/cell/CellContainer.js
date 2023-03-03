@@ -21,9 +21,17 @@ const CellContainer = props => {
       return {x: xCord, y: yCord};
     };
 
+    useEffect(() => {
+      window.addEventListener('resize', getCenterCords);
+  
+      return () => {
+        window.removeEventListener('resize', getCenterCords);
+      };
+    }, []);
+
     return (
       <div ref={ref}>
-        <Cell xPos={xIndex} yPos={yIndex} />
+        <Cell xIndex={xIndex} yIndex={yIndex} />
       </div>
     );
 }
