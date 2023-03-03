@@ -11,10 +11,8 @@ const fieldDimensionsSlice = createSlice({
     name: 'fieldDims',
     initialState,
     reducers: {
-        actions: {
-            setFieldDimensions: (state, actions) => {
-                state.fieldDims = actions.payload;
-            }
+        setFieldDimensions: (state, action) => {
+            state.fieldDims = action.payload;
         }
     }
 });
