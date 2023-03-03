@@ -1,48 +1,25 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { selectFieldDimensions } from "./fieldDimensionsSlice";
+import { useDispatch } from "react-redux";
+import FormInput from "../../components/form-input/FormInput";
+import { setFieldDimensions } from "./fieldDimensionsSlice";
+import styles from './fieldDimensionsController.module.css';
 
 const FieldDimensionsController = () => {
     const dispatch = useDispatch();
-
-    const fieldDims = useSelector(selectFieldDimensions);
-
-    const [xVal, setXVal] = useState(fieldDims.x);
-    const [yVal, setYVal] = useState(fieldDims.y);
   
     const handleClick = (event) => {
         event.preventDefault();
+        
+        // Convert the data sent from the form into an object of key value pairs
+        const data = Object.fromEntries(new FormData(event.target).entries());
 
-        console.log(event);
+        dispatch(setFieldDimensions(data));
     }
   
-    const handleChange = (event) => {
-      event.preventDefault();
-  
-      if (event.target.value >= 2) {
-        if (event.target.name === 'xVal') setYVal(event.target.value);
-        else if (event.target.name === 'yVal') setXVal(event.target.value);
-        else console.logError('Input not connected properly');
-      }
-    }
-
     return (
-        <form style={{display: 'flex', gap: '8px'}}>
-            <label htmlFor='xVal'>X</label>
-            <input type='number' 
-                onChange={handleChange} 
-                value={yVal} 
-                id='xVal'
-                name='xVal'
-                />
-            <label htmlFor='yVal'>Y</label>
-            <input type='number' 
-                onChange={handleChange} 
-                value={xVal} 
-                id='yVal'
-                name='yVal'
-                />
-            <button type='submit' onClick={handleClick}>Enter</button>
+        <form className={styles['container']} onSubmit={handleClick}>
+            <FormInput labelText={'X'} type={'number'} id={'x'} name={'x'} minVal={2} />
+            <FormInput labelText={'Y'} type={'number'} id={'y'} name={'y'} minVal={2} />
+            <button type='submit' value='submit'>Generate</button>
       </form>
     );
 }
