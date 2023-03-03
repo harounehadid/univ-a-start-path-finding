@@ -28,14 +28,14 @@ const FieldDimensionsController = () => {
 
     return (
         <form style={{display: 'flex', gap: '8px'}}>
-            <label for='xVal'>X</label>
+            <label htmlFor='xVal'>X</label>
             <input type='number' 
                 onChange={handleChange} 
                 value={yVal} 
                 id='xVal'
                 name='xVal'
                 />
-            <label for='yVal'>Y</label>
+            <label htmlFor='yVal'>Y</label>
             <input type='number' 
                 onChange={handleChange} 
                 value={xVal} 
