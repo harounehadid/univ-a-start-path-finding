@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     fieldDims: {
-        x: 2,
-        y: 2
+        x: Math.floor(Math.random() * 8),
+        y: Math.floor(Math.random() * 8)
     }
 };
 
