@@ -1,9 +1,15 @@
 import Cell from './Cell';
 import { useRef, useState, useEffect } from 'react';
+import CellsManager from '../../features/cells-manager/CellsManager';
 // import React from 'react';
 
 const CellContainer = props => {
     const { xIndex, yIndex } = props;
+
+    const [cellData, setCellData] = useState({});
+    useEffect(() => {
+      setCellData(CellsManager.getCellByIndex(xIndex, yIndex));
+    }, [cellData])
 
     const ref = useRef();
   
@@ -21,17 +27,27 @@ const CellContainer = props => {
       return {x: xCord, y: yCord};
     };
 
+    const updateData = () => {
+      const centerPos = getCenterCords();
+      CellsManager.processCell(xIndex, yIndex, centerPos);
+    }
+
     useEffect(() => {
-      window.addEventListener('resize', getCenterCords);
+      window.addEventListener('resize', updateData);
+
+      updateData();
   
       return () => {
-        window.removeEventListener('resize', getCenterCords);
+        window.removeEventListener('resize', updateData);
       };
     }, []);
 
     return (
       <div ref={ref}>
-        <Cell xIndex={xIndex} yIndex={yIndex} />
+        {
+          cellData ? <Cell xIndex={cellData.xIndex} yIndex={cellData.yIndex} rep={cellData.representation} />
+                   : <Cell xIndex={xIndex} yIndex={yIndex} />
+        }
       </div>
     );
 }

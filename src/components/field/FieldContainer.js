@@ -1,20 +1,13 @@
 import CellContainer from "../cell/CellContainer";
 import { useSelector } from "react-redux";
 import { selectFieldDimensions } from "../../features/set-field-dimensions/fieldDimensionsSlice";
+import CellsManager from "../../features/cells-manager/CellsManager";
+import Field from "./Field";
 
 const FieldContainer = () => {
     const fieldDims = useSelector(selectFieldDimensions);
 
-    const styles = {
-        display: 'grid',
-        gridTemplate: `repeat(${fieldDims.x}, 1fr) / repeat(${fieldDims.y}, 1fr)`,
-        outline: '1px solid black',
-        padding: '5px',
-        gap: '5px',
-        margin: '10px'
-    };
-
-    const generateFieldArray = (xi, yi) => {
+    const generateField = (xi, yi) => {
         const array = [];
 
         for (let i = 0; i < xi; i++) {
@@ -36,15 +29,10 @@ const FieldContainer = () => {
         return array;
     }
 
-    return (
-        <div style={styles}>
-            {
-                generateFieldArray(fieldDims.x, fieldDims.y).map(row => {
-                    return row.map((cell, index) => <CellContainer xIndex={cell.x} yIndex={cell.y} key={index} />)
-                })
-            }
-        </div>
-    );
+    const fieldArr = generateField(fieldDims.x, fieldDims.y);
+    CellsManager.setCellsManager(fieldDims.x, fieldDims.y);
+
+    return <Field xDim={fieldDims.x} yDim={fieldDims.y} fieldArr={fieldArr} />;
 }
 
 export default FieldContainer;
