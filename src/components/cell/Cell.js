@@ -1,7 +1,5 @@
-import { media } from "../../functionality/getResource";
-
 const Cell = props => {
-    const { xIndex, yIndex, rep } = props;
+    const { rep = '', name = '' } = props;
 
     const styles = {
         container: {
@@ -17,7 +15,7 @@ const Cell = props => {
     return (
         <div style={styles.container}>
             <img src={rep} alt='' />
-            <p style={styles.p}>{`{${xIndex}, ${yIndex}}`}</p>
+            <p style={styles.p}>{name}</p>
         </div>
     );
 }

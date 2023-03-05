@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const minDimLength = 2;
+const maxDimToAdd = 4;
+
 const initialState = {
     fieldDims: {
-        x: Math.floor(Math.random() * 8),
-        y: Math.floor(Math.random() * 8)
+        x: Math.floor((Math.random() * maxDimToAdd) + minDimLength),
+        y: Math.floor((Math.random() * maxDimToAdd) + minDimLength)
     }
 };
 

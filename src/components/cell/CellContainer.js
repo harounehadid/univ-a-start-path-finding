@@ -1,19 +1,26 @@
 import Cell from './Cell';
-import { useRef, useState, useEffect } from 'react';
-import CellsManager from '../../features/cells-manager/CellsManager';
-// import React from 'react';
+import { useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCell, updateCell, updateCellPosition } from '../field/fieldSlice';
+import { selectCellTypesArray, substractCellUnit } from '../../features/cell-types/cellTypesSlice';
+import typeSelector from '../../features/type-selector/typeSelector';
 
 const CellContainer = props => {
-    const { xIndex, yIndex } = props;
+    const { id } = props;
 
-    const [cellData, setCellData] = useState({});
-    useEffect(() => {
-      setCellData(CellsManager.getCellByIndex(xIndex, yIndex));
-    }, [cellData])
-
+    const dispatch = useDispatch();
     const ref = useRef();
+
+    // Launch needed code after first time component creations >>>>>>>>>>>>>>>>>
+    const cellTypesData = useSelector(selectCellTypesArray);
+    useEffect(() => {
+      const cellType = typeSelector(cellTypesData);
+      dispatch(substractCellUnit({typeName: cellType.name}))
+      dispatch(updateCell({cellType, id}));
+    }, []);
+    // -----------------------------------------------------
   
-    // This function calculate X and Y cordinates of the center of the element
+    // This function calculate X and Y cordinates of the center of the element >>>>>>>>>>>>>>>
     const getCenterCords = () => {
       // Getting the x and y cordinations of element's edges
       const rect = ref.current.getBoundingClientRect();
@@ -28,8 +35,8 @@ const CellContainer = props => {
     };
 
     const updateData = () => {
-      const centerPos = getCenterCords();
-      CellsManager.processCell(xIndex, yIndex, centerPos);
+      const pos = getCenterCords();
+      dispatch(updateCellPosition({id, pos}));
     }
 
     useEffect(() => {
@@ -41,13 +48,14 @@ const CellContainer = props => {
         window.removeEventListener('resize', updateData);
       };
     }, []);
+    // -------------------------------------------------------
+
+    const cellData = useSelector(state => selectCell(state, id));
 
     return (
       <div ref={ref}>
-        {
-          cellData ? <Cell xIndex={cellData.xIndex} yIndex={cellData.yIndex} rep={cellData.representation} />
-                   : <Cell xIndex={xIndex} yIndex={yIndex} />
-        }
+        <Cell rep={cellData.representation} name={cellData.type} />
+        {/* <Cell rep={cellTypes.empty.representation} /> */}
       </div>
     );
 }

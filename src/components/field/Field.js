@@ -19,9 +19,7 @@ const Field = props => {
     return (
         <div style={styles}>
             {
-                fieldArr.map(row => {
-                    return row.map((cell, index) => <CellContainer xIndex={cell.x} yIndex={cell.y} key={index} />)
-                })
+                fieldArr.map(cell => <CellContainer id={cell.id} key={cell.id} />)
             }
         </div>
     );

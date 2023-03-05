@@ -1,36 +1,22 @@
-import CellContainer from "../cell/CellContainer";
-import { useSelector } from "react-redux";
-import { selectFieldDimensions } from "../../features/set-field-dimensions/fieldDimensionsSlice";
-import CellsManager from "../../features/cells-manager/CellsManager";
+import { useDispatch, useSelector } from "react-redux";
+import { selectFieldDimensions } from "../../features/field-dimensions/fieldDimensionsSlice";
 import Field from "./Field";
+import { useEffect } from "react";
+import { selectFieldArray, setField } from "./fieldSlice";
+import { setCellTypes } from "../../features/cell-types/cellTypesSlice";
 
 const FieldContainer = () => {
+    const dispatch = useDispatch();
+
     const fieldDims = useSelector(selectFieldDimensions);
 
-    const generateField = (xi, yi) => {
-        const array = [];
+    useEffect(() => {
+        dispatch(setField(fieldDims));
+        // Set cell types data
+        dispatch(setCellTypes(fieldDims))
+    }, [fieldDims.x, fieldDims.y]);
 
-        for (let i = 0; i < xi; i++) {
-            const row = [];
-
-            for (let j = 0; j < yi; j++) {
-                const newCell = {
-                    x: i,
-                    y: j,
-                    id: `x${i}y${j}`
-                };
-
-                row.push(newCell);
-            }
-
-            array.push(row);
-        }
-
-        return array;
-    }
-
-    const fieldArr = generateField(fieldDims.x, fieldDims.y);
-    CellsManager.setCellsManager(fieldDims.x, fieldDims.y);
+    const fieldArr = useSelector(selectFieldArray);
 
     return <Field xDim={fieldDims.x} yDim={fieldDims.y} fieldArr={fieldArr} />;
 }
